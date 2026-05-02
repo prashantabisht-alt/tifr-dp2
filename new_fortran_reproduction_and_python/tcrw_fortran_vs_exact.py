@@ -16,22 +16,23 @@ shift — the Fortran (x, y) and authors' (i, j) labels are identical.
 import os, sys, numpy as np
 import matplotlib.pyplot as plt
 
-for c in (
-    "/sessions/elegant-wizardly-einstein/mnt/TIFR DP1 to DP2 Research Assistant",
-    "/Users/prashantbisht/Documents/Claude/Projects/TIFR DP1 to DP2 Research Assistant"):
-    if os.path.isdir(c):
-        ROOT = c
-        break
+# Resolve paths from the script's own location.  This script lives in
+# <ROOT>/new_fortran_reproduction_and_python/.
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 
-NEW = os.path.join(ROOT, "new_fortran_reproduction_and_python")
+NEW = HERE
 sys.path.insert(0, ROOT)
 sys.path.insert(0, NEW)
 
 # Load authors' module
 import importlib.util
-spec = importlib.util.spec_from_file_location(
-    "TRW_authors",
-    os.path.join(NEW, "TRW._original_code_by_paperauthors.py"))
+TRW_PATH = os.path.join(NEW, "TRW._original_code_by_paperauthors.py")
+if not os.path.isfile(TRW_PATH):
+    raise FileNotFoundError(
+        "TRW._original_code_by_paperauthors.py not found next to "
+        "tcrw_fortran_vs_exact.py")
+spec = importlib.util.spec_from_file_location("TRW_authors", TRW_PATH)
 TRW = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(TRW)
 

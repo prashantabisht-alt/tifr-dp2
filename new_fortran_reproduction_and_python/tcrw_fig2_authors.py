@@ -44,14 +44,12 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for cand in (HERE,
-             "/sessions/elegant-wizardly-einstein/mnt/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python",
-             "/Users/prashantbisht/Documents/Claude/Projects/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python"):
-    p = os.path.join(cand, "TRW._original_code_by_paperauthors.py")
-    if os.path.isfile(p):
-        ROOT = cand
-        TRW_PATH = p
-        break
+ROOT = HERE
+TRW_PATH = os.path.join(ROOT, "TRW._original_code_by_paperauthors.py")
+if not os.path.isfile(TRW_PATH):
+    raise FileNotFoundError(
+        "TRW._original_code_by_paperauthors.py not found next to "
+        "tcrw_fig2_authors.py")
 
 # Import authors' TRW module by file path (filename has dots, can't import directly)
 spec = importlib.util.spec_from_file_location("TRW", TRW_PATH)

@@ -65,13 +65,11 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for cand in (HERE,
-             "/sessions/elegant-wizardly-einstein/mnt/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python",
-             "/Users/prashantbisht/Documents/Claude/Projects/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python"):
-    if os.path.isfile(os.path.join(cand, "tcrw_fig1_bloch_diffusion.py")):
-        sys.path.insert(0, cand)
-        ROOT = cand
-        break
+ROOT = HERE
+if not os.path.isfile(os.path.join(ROOT, "tcrw_fig1_bloch_diffusion.py")):
+    raise FileNotFoundError(
+        "tcrw_fig1_bloch_diffusion.py not found next to tcrw_fig1_pymc.py")
+sys.path.insert(0, ROOT)
 
 from tcrw_fig1_bloch_diffusion import D_exact   # exact reference D(ω, D_r)
 

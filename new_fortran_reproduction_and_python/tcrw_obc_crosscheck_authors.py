@@ -18,23 +18,22 @@ For equivalent physics the user must set L_U = L_A + 1.
 import os, sys, numpy as np, scipy.sparse as sp
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# Work inside either macOS client or Linux sandbox
-for candidate in (
-    "/Users/prashantbisht/Documents/Claude/Projects/TIFR DP1 to DP2 Research Assistant",
-    "/sessions/elegant-wizardly-einstein/mnt/TIFR DP1 to DP2 Research Assistant",
-):
-    if os.path.isdir(candidate):
-        ROOT = candidate
-        break
+# This script lives in <ROOT>/new_fortran_reproduction_and_python/, so the
+# project root is HERE's parent.
+ROOT = os.path.dirname(HERE)
+# The TRW reference module lives next to this script (same folder),
+# not in a separate `fortran_reproduction/` directory.
 sys.path.insert(0, ROOT)
-sys.path.insert(0, os.path.join(ROOT, "fortran_reproduction"))
+sys.path.insert(0, HERE)
 
 # The authors' module has an unusual filename.  Load it as TRW.
 import importlib.util
-spec = importlib.util.spec_from_file_location(
-    "TRW_authors",
-    os.path.join(ROOT, "fortran_reproduction",
-                 "TRW._original_code_by_paperauthors.py"))
+TRW_PATH = os.path.join(HERE, "TRW._original_code_by_paperauthors.py")
+if not os.path.isfile(TRW_PATH):
+    raise FileNotFoundError(
+        "TRW._original_code_by_paperauthors.py not found next to "
+        "tcrw_obc_crosscheck_authors.py")
+spec = importlib.util.spec_from_file_location("TRW_authors", TRW_PATH)
 TRW = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(TRW)
 

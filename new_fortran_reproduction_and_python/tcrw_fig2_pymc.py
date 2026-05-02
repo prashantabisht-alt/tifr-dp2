@@ -55,13 +55,10 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for cand in (HERE,
-             "/sessions/elegant-wizardly-einstein/mnt/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python",
-             "/Users/prashantbisht/Documents/Claude/Projects/TIFR DP1 to DP2 Research Assistant/new_fortran_reproduction_and_python"):
-    if os.path.isfile(os.path.join(cand, "tcrw_fig4c.py")):
-        sys.path.insert(0, cand)
-        ROOT = cand
-        break
+ROOT = HERE
+if not os.path.isfile(os.path.join(ROOT, "tcrw_fig4c.py")):
+    raise FileNotFoundError("tcrw_fig4c.py not found next to tcrw_fig2_pymc.py")
+sys.path.insert(0, ROOT)
 
 
 DX = np.array([0, 1, 0, -1], dtype=int)   # d = 0↑, 1→, 2↓, 3←
