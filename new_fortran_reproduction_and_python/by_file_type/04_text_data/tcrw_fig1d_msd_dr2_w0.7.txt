@@ -1,0 +1,1 @@
+../../tcrw_fig1d_msd_dr2_w0.7.txt
