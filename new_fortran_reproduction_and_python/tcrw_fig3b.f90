@@ -49,8 +49,9 @@
 ! Observable (Fig 3(b))
 ! ---------------------
 !   Sum J_Dr and J_ω over the LEFT-WALL sites only.  "Left wall" =
-!   { (x = 0, y = 0, …, L-1) }.  Because we only need the SUM (not
-!   the 2D field), we accumulate four int64 scalar counters:
+!   { (x = 0, y = 0, …, L_cur-1) }, where L_cur is the actual site
+!   count per side.  Because we only need the SUM (not the 2D field),
+!   we accumulate four int64 scalar counters:
 !       Jx_w_Dr, Jy_w_Dr, Jx_w_om, Jy_w_om
 !   incremented only when x_before == 0 and step_type == 1.
 !
@@ -93,7 +94,11 @@
 !
 ! Convention / kernel
 ! -------------------
-!   - Lattice IS the L × L box, OBC, no wall ring.
+!   - Legend label L follows the authors' convention: sites are 0..L,
+!     so the actual site count is L_cur = L + 1.  The output keeps
+!     L_paper as the paper/legend label and simulates with L_cur.
+!   - No surrounding wall ring: all sites in the L_cur × L_cur box are
+!     occupiable, with chiral moves blocked only by OBC bounds.
 !   - We use tcrw_step_mask (the kernel from Fig 2 that reports
 !     step_type) with an all-TRUE mask, which reduces exactly to
 !     the OBC dynamics of tcrw_step_obc while exposing step_type.

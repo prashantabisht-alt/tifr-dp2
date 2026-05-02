@@ -9,7 +9,8 @@
 ! Panel: Fig 3(g) — linear–log plot of the ratio of the TOTAL
 !        magnitudes of the two left-wall current components, at
 !        fixed D_r = 10^-3, as a function of the chirality ω ∈ [0, 1],
-!        for system sizes L ∈ {10, 19, 49}.
+!        for system sizes L ∈ {9, 19, 49} in the authors'
+!        convention (10×10, 20×20, and 50×50 actual site grids).
 !
 !        Paper claim (page 3):
 !          "|J_Dr| decreases several orders of magnitude when going
@@ -66,14 +67,17 @@
 !
 ! Convention / kernel
 ! -------------------
-!   - Lattice IS the L × L box, OBC, no wall ring.
+!   - Legend label L follows the authors' convention: sites are 0..L,
+!     so the actual site count is L_cur = L + 1.
+!   - No surrounding wall ring: all sites in the L_cur × L_cur box are
+!     occupiable, with chiral moves blocked only by OBC bounds.
 !   - tcrw_step_mask with an all-TRUE mask (exposes step_type).
 !   - Adaptive τ_relax = max(L^2/D_r, 1/D_r^2), same as Fig 3(a,b,f).
 !
 ! Parameters
 ! ----------
 !   D_r           = 10^-3                      ! fixed (paper Fig 3g)
-!   L grid        = (10, 19, 49)               ! paper subset (matches Fig 3f)
+!   L grid        = (9, 19, 49)                ! authors labels; 10,20,50 sites
 !   ω grid        = 21 linearly-spaced pts 0.0 → 1.0
 !   T_floor       = 10^8                       ! minimum measurement length
 !   N_burn_floor  = 10^7                       ! minimum discarded burn-in

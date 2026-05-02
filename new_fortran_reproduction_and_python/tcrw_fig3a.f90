@@ -15,14 +15,19 @@
 !                 once normalized per site → "edge localization is a
 !                 bulk-band-topology effect, not a finite-size artefact".
 !
-! Convention (matches Python `tcrw_obc.py`)
-! -----------------------------------------
-!   - Lattice IS the L × L playground.  Walker occupies any site in
-!     [0, L-1] × [0, L-1].  No surrounding wall ring.
-!   - Edge sites: x == 0 .or. x == L-1 .or. y == 0 .or. y == L-1
-!     → n_edge = 4L − 4
-!   - Bulk sites: 1 ≤ x ≤ L-2 .and. 1 ≤ y ≤ L-2
-!     → n_bulk = (L − 2)²
+! Convention (matches authors' TRW.py and Python `tcrw_obc.py`)
+! --------------------------------------------------------------
+!   - The legend label L is the authors' lattice label: sites are
+!     0..L inclusive, so the actual site count per side is L_cur=L+1.
+!     Example: the L=4 curve is simulated on a 5×5 site grid.
+!   - The code stores this explicitly as L_paper (output label) and
+!     L_cur = L_paper + 1 (allocated site count).
+!   - No surrounding wall ring: all sites in 0..L_cur-1 are occupiable,
+!     and a chiral step is blocked only when it would leave this box.
+!   - Edge sites: x == 0 .or. x == L_cur-1 .or. y == 0 .or. y == L_cur-1
+!     → n_edge = 4L_cur − 4
+!   - Bulk sites: 1 ≤ x ≤ L_cur-2 .and. 1 ≤ y ≤ L_cur-2
+!     → n_bulk = (L_cur − 2)²
 !   - Per-site ratio:   r = (P_edge / n_edge) / (P_bulk / n_bulk)
 !   - We use the same OBC step kernel as Fig 1: `tcrw_step_obc`
 !     (NOT the wall-ringed mask kernel used in Fig 2 defects).

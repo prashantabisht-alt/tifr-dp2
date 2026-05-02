@@ -7,7 +7,8 @@
 !
 ! Panel: Fig 3(f) — plot of the per-site edge/bulk ratio vs the noise
 !        chirality ω, at fixed rotational noise rate D_r = 10^-3, for
-!        system sizes L ∈ {10, 19, 49}.
+!        system sizes L ∈ {9, 19, 49} in the authors' convention
+!        (10×10, 20×20, and 50×50 actual site grids).
 !
 !        Paper caption punchline: the ratio is approximately INDEPENDENT
 !        of ω.  Even at ω = 0.5 (no net chirality), edge localization
@@ -18,13 +19,16 @@
 !        direction of the edge current (Fig 3(b), (g)) but not its
 !        magnitude or the existence of edge localization.
 !
-! Convention (matches Python `tcrw_obc.py:fig3f_Pedge_vs_omega`)
-! -------------------------------------------------------------
-!   - Lattice IS the L × L playground (OBC, no wall ring).
-!   - Edge sites: x == 0 .or. x == L-1 .or. y == 0 .or. y == L-1
-!     → n_edge = 4L − 4
-!   - Bulk sites: 1 ≤ x ≤ L-2 .and. 1 ≤ y ≤ L-2
-!     → n_bulk = (L − 2)^2
+! Convention (matches authors' TRW.py and Python `tcrw_obc.py`)
+! --------------------------------------------------------------
+!   - Legend label L follows the authors' convention: sites are 0..L,
+!     so the actual site count is L_cur = L + 1.
+!   - No surrounding wall ring: all sites in the L_cur × L_cur box are
+!     occupiable, with chiral moves blocked only by OBC bounds.
+!   - Edge sites: x == 0 .or. x == L_cur-1 .or. y == 0 .or. y == L_cur-1
+!     → n_edge = 4L_cur − 4
+!   - Bulk sites: 1 ≤ x ≤ L_cur-2 .and. 1 ≤ y ≤ L_cur-2
+!     → n_bulk = (L_cur − 2)^2
 !   - Per-site ratio: r = (P_edge / n_edge) / (P_bulk / n_bulk)
 !   - Uses tcrw_step_obc (same kernel as Fig 3(a)).
 !
@@ -41,7 +45,7 @@
 ! Parameters
 ! ----------
 !   D_r           = 10^-3                      ! fixed (paper Fig 3f)
-!   L grid        = (10, 19, 49)               ! paper subset
+!   L grid        = (9, 19, 49)                ! authors labels; 10,20,50 sites
 !   ω grid        = 21 linearly-spaced pts  0.0 → 1.0
 !   T_floor       = 3·10^8                     ! bumped from 10^8 for ω∈{0,1} cleanup
 !   N_burn_floor  = 3·10^7                     ! bumped from 10^7
