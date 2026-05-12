@@ -21,10 +21,20 @@
 # Output:   qt window, tcrw_fig1b.pdf, and/or tcrw_fig1b.png
 #
 # Usage:
-#   gnuplot -persist tcrw_fig1b.gnu                 # qt + PDF (default)
-#   gnuplot -e "mode='qt'"  -persist tcrw_fig1b.gnu # interactive only
-#   gnuplot -e "mode='pdf'"         tcrw_fig1b.gnu  # PDF only (headless)
-#   gnuplot -e "mode='png'"         tcrw_fig1b.gnu  # PNG only
+#   gnuplot tcrw_fig1b.gnu                 # PDF + PNG + qt 2x2 (default)
+#   gnuplot -e "mode='qt'"  tcrw_fig1b.gnu # 2x2 multiplot (no mouse)
+#   gnuplot -e "mode='qt4'" tcrw_fig1b.gnu # 4 separate windows
+#                                          #   — full mouse zoom/pan
+#   gnuplot -e "mode='pdf'" tcrw_fig1b.gnu # PDF only (headless)
+#   gnuplot -e "mode='png'" tcrw_fig1b.gnu # PNG only
+#
+# Note on mousing:
+#   `mode='qt'`  uses `set multiplot` — qt disables mousing inside multiplot
+#                because only the last panel's coordinate transform is kept.
+#   `mode='qt4'` opens four independent qt windows (terminals 0..3), so each
+#                panel has its own coordinate system and full mouse support
+#                (left-drag zoom, autoscale 'a', coordinate readout, etc.).
+# Both qt modes end with `pause mouse close`; no `-persist` flag is needed.
 #=====================================================================
 
 if (!exists("mode")) mode = "both"
@@ -84,48 +94,6 @@ LW = 0.3
 # samples are unaffected at 4 sig-fig precision.
 
 #=====================================================================
-# INTERACTIVE qt
-#=====================================================================
-if (mode eq "qt" || mode eq "both") {
-    set terminal qt size 1040,1040 enhanced font 'Helvetica,11' persist
-    set multiplot layout 2,2 \
-        title "TCRW Fig 1(b) — sample trajectories,  D_r = 10^{-3},  T = 10^{6}" \
-        font 'Helvetica,13'
-
-    set size square
-    set xlabel 'x'; set ylabel 'y'
-    unset colorbox                      # suppress per-panel colorbars
-
-    # ---- ω = 0.00 (top-left) ----
-    set title 'ω = 0.00'
-    plot f00 using 2:3:(column(1)+1) w l palette lw LW notitle, \
-         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
-         '< tail -n 1 '.f00               u 2:3 w p ls 102 notitle
-
-    # ---- ω = 0.50 (top-right) ----
-    set title 'ω = 0.50'
-    plot f05 using 2:3:(column(1)+1) w l palette lw LW notitle, \
-         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
-         '< tail -n 1 '.f05               u 2:3 w p ls 102 notitle
-
-    # ---- ω = 0.75 (bottom-left) ----
-    set title 'ω = 0.75'
-    plot f07 using 2:3:(column(1)+1) w l palette lw LW notitle, \
-         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
-         '< tail -n 1 '.f07               u 2:3 w p ls 102 notitle
-
-    # ---- ω = 1.00 (bottom-right) — also carry the shared colorbar --
-    set colorbox vertical user origin 0.93,0.10 size 0.018,0.80 \
-        front noinvert
-    set title 'ω = 1.00'
-    plot f10 using 2:3:(column(1)+1) w l palette lw LW notitle, \
-         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
-         '< tail -n 1 '.f10               u 2:3 w p ls 102 title 'End'
-
-    unset multiplot
-}
-
-#=====================================================================
 # PDF
 #=====================================================================
 if (mode eq "pdf" || mode eq "both") {
@@ -169,7 +137,7 @@ if (mode eq "pdf" || mode eq "both") {
 #=====================================================================
 # PNG
 #=====================================================================
-if (mode eq "png") {
+if (mode eq "png" || mode eq "both") {
     set terminal pngcairo size 1800,1800 enhanced font 'Helvetica,11'
     set output 'tcrw_fig1b.png'
     set multiplot layout 2,2 \
@@ -205,4 +173,95 @@ if (mode eq "png") {
     unset multiplot
     unset output
     print "Wrote tcrw_fig1b.png"
+}
+
+#=====================================================================
+# INTERACTIVE qt   (LAST — blocks on `pause mouse close`)
+#=====================================================================
+# 2x2 multiplot publication view. Note: qt disables mouse zoom/pan
+# inside multiplot (only the last panel's coordinate transform is
+# kept). The window is faithful but static. For an interactive view
+# that you *can* zoom into, use mode='qt4' below.
+# `pause mouse close` keeps gnuplot driving the qt event loop until
+# you close the window — without it the window may freeze or vanish
+# under macOS once gnuplot tries to exit.
+if (mode eq "qt" || mode eq "both") {
+    set terminal qt size 1040,1040 enhanced font 'Helvetica,11'
+    set multiplot layout 2,2 \
+        title "TCRW Fig 1(b) — sample trajectories,  D_r = 10^{-3},  T = 10^{6}" \
+        font 'Helvetica,13'
+
+    set size square
+    set xlabel 'x'; set ylabel 'y'
+    unset colorbox                      # suppress per-panel colorbars
+
+    set title 'ω = 0.00'
+    plot f00 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
+         '< tail -n 1 '.f00               u 2:3 w p ls 102 notitle
+
+    set title 'ω = 0.50'
+    plot f05 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
+         '< tail -n 1 '.f05               u 2:3 w p ls 102 notitle
+
+    set title 'ω = 0.75'
+    plot f07 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 notitle,   \
+         '< tail -n 1 '.f07               u 2:3 w p ls 102 notitle
+
+    set colorbox vertical user origin 0.93,0.10 size 0.018,0.80 \
+        front noinvert
+    set title 'ω = 1.00'
+    plot f10 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
+         '< tail -n 1 '.f10               u 2:3 w p ls 102 title 'End'
+
+    unset multiplot
+    pause mouse close
+}
+
+#=====================================================================
+# INTERACTIVE qt4  —  four separate, fully mousable windows
+#=====================================================================
+# One qt terminal per chirality. Because each window is a *single*
+# plot (no multiplot), qt keeps a per-window coordinate transform and
+# mouse zoom / pan / scroll / autoscale / coordinate readout all work.
+# `pause mouse close` waits on the active terminal (qt 3); while it
+# blocks, gnuplot pumps events for ALL four windows. Closing the
+# active window ends the pause and gnuplot exits.
+if (mode eq "qt4") {
+    set size square
+    set xlabel 'x'; set ylabel 'y'
+    set colorbox                       # show the per-window colorbar
+
+    set terminal qt 0 size 600,640 enhanced font 'Helvetica,11' \
+        title 'TCRW Fig 1(b)  ω = 0.00'
+    set title 'ω = 0.00   (D_r = 10^{-3},  T = 10^{6})'
+    plot f00 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
+         '< tail -n 1 '.f00               u 2:3 w p ls 102 title 'End'
+
+    set terminal qt 1 size 600,640 enhanced font 'Helvetica,11' \
+        title 'TCRW Fig 1(b)  ω = 0.50'
+    set title 'ω = 0.50   (D_r = 10^{-3},  T = 10^{6})'
+    plot f05 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
+         '< tail -n 1 '.f05               u 2:3 w p ls 102 title 'End'
+
+    set terminal qt 2 size 600,640 enhanced font 'Helvetica,11' \
+        title 'TCRW Fig 1(b)  ω = 0.75'
+    set title 'ω = 0.75   (D_r = 10^{-3},  T = 10^{6})'
+    plot f07 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
+         '< tail -n 1 '.f07               u 2:3 w p ls 102 title 'End'
+
+    set terminal qt 3 size 600,640 enhanced font 'Helvetica,11' \
+        title 'TCRW Fig 1(b)  ω = 1.00'
+    set title 'ω = 1.00   (D_r = 10^{-3},  T = 10^{6})'
+    plot f10 using 2:3:(column(1)+1) w l palette lw LW notitle, \
+         ''  u 2:3 every ::0::0           w p ls 101 title 'Start', \
+         '< tail -n 1 '.f10               u 2:3 w p ls 102 title 'End'
+
+    pause mouse close
 }

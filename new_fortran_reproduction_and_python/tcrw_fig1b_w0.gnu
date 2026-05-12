@@ -13,6 +13,12 @@
 # Reads:    tcrw_fig1b_traj_w0.00.txt      (columns: step  x  y)
 #           "step" is the REAL step number (0, 100, 200, ..., 10⁶).
 # Output:   qt window and/or tcrw_fig1b_w0.pdf
+#
+# Usage:
+#   gnuplot tcrw_fig1b_w0.gnu                # PDF then interactive qt
+#   gnuplot -e "mode='pdf'" tcrw_fig1b_w0.gnu # PDF only (headless)
+#   gnuplot -e "mode='qt'"  tcrw_fig1b_w0.gnu # interactive qt only
+# (no `-persist` needed; the qt block ends with `pause mouse close`.)
 #=====================================================================
 
 if (!exists("mode")) mode = "both"
@@ -62,21 +68,7 @@ set title  "TCRW Fig 1(b),  ω = 0.00   (D_r = 10^{-3},  T = 10^{6})" \
 # precision because 100+1 ≈ 100.
 
 #=====================================================================
-# INTERACTIVE qt
-#=====================================================================
-if (mode eq "qt" || mode eq "both") {
-    set terminal qt size 760,720 enhanced font 'Helvetica,11' persist
-    plot \
-      'tcrw_fig1b_traj_w0.00.txt' using 2:3:(column(1)+1) \
-                                    w l palette lw 0.9 notitle, \
-      ''                          u 2:3 every ::0::0 \
-                                    w p ls 101 title 'Start', \
-      ''                          u 2:3 every ::Nlast::Nlast \
-                                    w p ls 102 title 'End'
-}
-
-#=====================================================================
-# PDF
+# PDF  (rendered FIRST, then qt — same idiom as tcrw_fig3*.gnu)
 #=====================================================================
 if (mode eq "pdf" || mode eq "both") {
     set terminal pdfcairo size 13cm,12cm enhanced font 'Helvetica,10'
@@ -90,4 +82,24 @@ if (mode eq "pdf" || mode eq "both") {
                                     w p ls 102 title 'End'
     unset output
     print "Wrote tcrw_fig1b_w0.pdf"
+}
+
+#=====================================================================
+# INTERACTIVE qt   (LAST — blocks on `pause mouse close`)
+#=====================================================================
+# `pause mouse close` keeps gnuplot's main loop pumping events to the
+# qt window, which is what makes mouse zoom / pan / scroll / autoscale
+# actually work on macOS. The earlier version of this script relied on
+# the `persist` keyword on the terminal line, which leaves the window
+# visible but with a dead event loop — see feedback memory.
+if (mode eq "qt" || mode eq "both") {
+    set terminal qt size 760,720 enhanced font 'Helvetica,11'
+    plot \
+      'tcrw_fig1b_traj_w0.00.txt' using 2:3:(column(1)+1) \
+                                    w l palette lw 0.9 notitle, \
+      ''                          u 2:3 every ::0::0 \
+                                    w p ls 101 title 'Start', \
+      ''                          u 2:3 every ::Nlast::Nlast \
+                                    w p ls 102 title 'End'
+    pause mouse close
 }
