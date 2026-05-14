@@ -1,0 +1,41 @@
+\contentsline {section}{\numberline {1}Where we started}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The PI meeting (4 May 2026)}{2}{subsection.1.1}%
+\contentsline {paragraph}{The home reference.}{2}{paragraph*.1}%
+\contentsline {paragraph}{The 2021 draft.}{2}{paragraph*.2}%
+\contentsline {paragraph}{The notebook.}{2}{paragraph*.3}%
+\contentsline {subsection}{\numberline {1.2}Where this fits in the bigger picture}{2}{subsection.1.2}%
+\contentsline {section}{\numberline {2}The scientific question, in one paragraph}{3}{section.2}%
+\contentsline {section}{\numberline {3}The model in 30 seconds}{3}{section.3}%
+\contentsline {section}{\numberline {4}The journey: a 7-phase timeline}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Phase 1: read everything}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Phase 2: re-derive from scratch}{3}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Phase 3: the first wrong hypothesis}{4}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Phase 4: derive the $c_3$ sign from the master equation}{4}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Phase 5: verify with Monte Carlo}{4}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}Python KMC (small scale)}{4}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}Fortran KMC (high statistics)}{4}{subsubsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.6}Phase 6: robustness check}{5}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Phase 7: the second bug}{5}{subsection.4.7}%
+\contentsline {section}{\numberline {5}Where the two bugs live in the matrix}{5}{section.5}%
+\contentsline {section}{\numberline {6}The codes we wrote}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Fortran KMC}{6}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Python theory}{6}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Diagnostic scripts}{7}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Figure scripts}{7}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Interactive widgets}{7}{subsection.6.5}%
+\contentsline {section}{\numberline {7}The headline figure}{8}{section.7}%
+\contentsline {section}{\numberline {8}The verification chain in pictures}{9}{section.8}%
+\contentsline {section}{\numberline {9}What this means for the paper}{9}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Concrete deliverables for the Confinement-2021 draft}{9}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}What's still missing}{9}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Honest assessment: what I actually did}{9}{section.10}%
+\contentsline {subsection}{\numberline {10.1}What's mine}{9}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}What was already there}{10}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Where I went wrong}{10}{subsection.10.3}%
+\contentsline {section}{\numberline {11}The interactive tools, in detail}{10}{section.11}%
+\contentsline {subsection}{\numberline {11.1}JMVR single-walker viewer}{10}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}TCRW single-walker viewer}{10}{subsection.11.2}%
+\contentsline {section}{\numberline {12}What's next}{11}{section.12}%
+\contentsline {section}{\numberline {13}Files inventory}{11}{section.13}%
+\contentsline {section}{\numberline {14}Acknowledgements}{12}{section.14}%
+\contentsline {section}{\numberline {15}Closing}{12}{section.15}%
