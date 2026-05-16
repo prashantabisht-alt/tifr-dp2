@@ -77,6 +77,7 @@ def display_points(
     L: int,
     x_range: tuple[float, float] = (-1.0, 60.0),
     y_range: tuple[float, float] = (-1.0, 52.0),
+    use_periodic_images: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Return centered axial triangular display points for the draft-style panel.
 
@@ -98,10 +99,11 @@ def display_points(
     center_y = 0.5 * sqrt3 * (L / 2.0)
 
     xs, ys, n1s, n2s = [], [], [], []
+    image_shifts = (-1, 0, 1) if use_periodic_images else (0,)
     for n1 in range(L):
         for n2 in range(L):
-            for i1 in (-1, 0, 1):
-                for i2 in (-1, 0, 1):
+            for i1 in image_shifts:
+                for i2 in image_shifts:
                     u = n1 + i1 * L
                     v = n2 + i2 * L
                     x = center_x + u + 0.5 * v
